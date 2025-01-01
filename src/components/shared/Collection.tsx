@@ -13,7 +13,7 @@ type CollectionProps = {
 };
 
 const Collection = ({
-  data,
+  data = [],
   emptyTitle,
   emptyStateSubtext,
   collectionType,
@@ -21,32 +21,24 @@ const Collection = ({
   totalPages,
   urlParamName,
 }: CollectionProps) => {
-  // console.log("data length", data.length);
+  const hasEvents = Array.isArray(data) && data.length > 0;
 
   return (
     <>
-      {Number(data.length) > 0 ? (
+      {hasEvents ? (
         <div className="flex flex-col items-center gap-10">
           <ul className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-10">
-            {data.map((event) => {
-              const hasOrderLink = collectionType === "Events_Organized";
-              // Show orders link only for events organized by the user
-              const hidePrice = collectionType === "My_Tickets";
-              // Hide price for events the user has booked tickets for
-
-              return (
-                <li key={event._id} className="flex justify-center w-full">
-                  <EventCard
-                    event={event}
-                    hasOrderLink={hasOrderLink}
-                    hidePrice={hidePrice}
-                  />
-                </li>
-              );
-            })}
+            {data.map((event) => (
+              <li key={event._id} className="flex justify-center w-full">
+                <EventCard
+                  event={event}
+                  hasOrderLink={collectionType === "Events_Organized"}
+                  hidePrice={collectionType === "My_Tickets"}
+                />
+              </li>
+            ))}
           </ul>
 
-          {/* Pagination controls */}
           {totalPages && totalPages > 1 && (
             <Pagination
               urlParamName={urlParamName}

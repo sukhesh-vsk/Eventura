@@ -9,22 +9,22 @@ import Link from "next/link";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
 const Home = async ({ searchParams }: SearchParamProps) => {
-  // console.log(searchParams);
+  // Access searchParams directly without awaiting
   const page = Number(searchParams?.page) || 1;
-  const searchText = (searchParams?.query as string) || "";
-  const category = (searchParams?.category as string) || "";
+  const searchText = searchParams?.query?.toString() || "";
+  const category = searchParams?.category?.toString() || "";
 
+  // Fetch events based on query parameters 
   const events = await getAllEvents({
     query: searchText,
     category: category,
     limit: 3,
     page: page,
   });
-  // console.log(events?.data);
-  // console.log(events?.totalPages);
 
   return (
     <>
+      {/* Hero Section */}
       <section className="bg-primary-50 bg-dotted-pattern bg-no-repeat bg-cover py-5 lg:py-10">
         <div className="wrapper flex flex-col md:flex-row justify-between items-start gap-12 max-lg:gap-5">
           <div className="flex flex-col justify-center gap-8 md:max-lg:my-16">
@@ -52,6 +52,7 @@ const Home = async ({ searchParams }: SearchParamProps) => {
         </div>
       </section>
 
+      {/* Events Section */}
       <section
         id="events"
         className="wrapper my-8 flex flex-col gap-8 md:gap-12"
@@ -65,13 +66,14 @@ const Home = async ({ searchParams }: SearchParamProps) => {
           <CategoryFilter />
         </div>
 
+        {/* Events Collection */}
         <Collection
           data={events?.data}
           emptyTitle="No Events Found"
           emptyStateSubtext="Come back later"
           collectionType="All_Events"
           page={page}
-          totalPages={events?.totalPages}
+          totalPages={events?.totalPages || 0} // Fallback to 0 if `totalPages` is undefined
         />
       </section>
     </>

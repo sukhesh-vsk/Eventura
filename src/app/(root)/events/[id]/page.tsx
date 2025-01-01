@@ -8,20 +8,34 @@ import { formatDateTime } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from 'next';
+
+interface Props {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  return {
+    title: `Event ${params.id}`,
+  };
+};
 
 const EventPage = async ({
-  params: { id },
+  params,
   searchParams,
-}: SearchParamProps) => {
-  const event = await getEventById(id);
-  // console.log(event);
+}: Props) => {
+  const { id } = params;
 
+  // Fetch event details
+  const event = await getEventById(id);
+
+  // Fetch related events
   const relatedEvents = await getRelatedEventsByCategory({
     categoryId: event.category._id,
     eventId: event._id,
     page: searchParams.page as string,
   });
-  // console.log(relatedEvents);
 
   return (
     <>
@@ -68,7 +82,7 @@ const EventPage = async ({
               <div className="flex gap-3 items-center">
                 <Image
                   src="/assets/icons/calendar.svg"
-                  alt="calender"
+                  alt="calendar"
                   width={49}
                   height={48}
                   className="w-6 h-6 object-cover"
@@ -115,7 +129,7 @@ const EventPage = async ({
         </div>
       </section>
 
-      {/* Related Events -> Events from the same organizer or category name */}
+      {/* Related Events */}
       <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
         <h2 className="h2-bold">Related Events</h2>
 
@@ -124,7 +138,6 @@ const EventPage = async ({
           emptyTitle="No Events Found"
           emptyStateSubtext="Come back later"
           collectionType="All_Events"
-          // limit={3}
           page={searchParams.page as string}
           totalPages={relatedEvents?.totalPages}
         />

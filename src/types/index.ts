@@ -1,3 +1,5 @@
+import { ParsedUrlQuery } from 'querystring';
+
 // ====== USER PARAMS
 export type CreateUserParams = {
   clerkId: string;
@@ -143,9 +145,18 @@ export type RemoveUrlQueryParams = {
   keysToRemove: string[];
 };
 
-export type SearchParamProps = {
-  params: { id: string };
-  // params is an object with an `id` property that is a string => typically used in catch the segments in dynamic routes `/events/:id`
-  searchParams: { [key: string]: string | string[] | undefined };
-  // searchParams is an object with keys as string and values as strings | array of strings | undefined => typically used to catch query params ?query=John&category=React
+export interface SearchParamProps {
+  params: { id: string }; // Adjust as per your route structure
+  searchParams: {
+    page?: string;
+    query?: string;
+    category?: string;
+  };
 };
+
+// export type SearchParamProps = {
+//   params: { id: string };
+//   // params is an object with an `id` property that is a string => typically used in catch the segments in dynamic routes `/events/:id`
+//   searchParams: { [key: string]: string | string[] | undefined };
+//   // searchParams is an object with keys as string and values as strings | array of strings | undefined => typically used to catch query params ?query=John&category=React
+// };

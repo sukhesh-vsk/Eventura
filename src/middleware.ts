@@ -21,12 +21,12 @@ const isPublicRoute = createRouteMatcher([
 
 const isRestrictedRoute = createRouteMatcher(["/events/create"]);
 
-export default clerkMiddleware((auth, request) => {
+export default clerkMiddleware(async (auth, request) => {
   if (isRestrictedRoute(request)) {
-    auth().protect();
+    await auth.protect();
   }
   if (!isPublicRoute(request)) {
-    auth().protect();
+    await auth.protect();
   }
 });
 

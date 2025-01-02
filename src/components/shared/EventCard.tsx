@@ -12,8 +12,8 @@ type CardProps = {
   hidePrice: boolean;
 };
 
-const EventCard = ({ event, hasOrderLink, hidePrice }: CardProps) => {
-  const { sessionClaims } = auth();
+const EventCard = async ({ event, hasOrderLink, hidePrice }: CardProps) => {
+  const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
   const isEventCreator = userId === event.organizer._id.toString();
 

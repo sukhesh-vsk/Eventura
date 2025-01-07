@@ -9,10 +9,14 @@ import { SearchParamProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
-const EventPage = async ({
-  params: { id },
-  searchParams,
-}: SearchParamProps) => {
+const EventPage = async (props: SearchParamProps) => {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const event = await getEventById(id);
   // console.log(event);
 

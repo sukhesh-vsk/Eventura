@@ -8,8 +8,9 @@ import { getEventsByUser } from "@/lib/actions/event.actions";
 import { IOrder } from "@/lib/database/models/order.model";
 import { SearchParamProps } from "@/types";
 
-const ProfilePage = async ({ searchParams }: SearchParamProps) => {
-  const { sessionClaims } = auth();
+const ProfilePage = async (props: SearchParamProps) => {
+  const searchParams = await props.searchParams;
+  const { sessionClaims } = await auth();
   const userId = sessionClaims?.userId as string;
 
   const ordersPage = Number(searchParams?.ordersPage) || 1;

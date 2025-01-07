@@ -5,7 +5,8 @@ import { SearchParamProps } from "@/types";
 import { IOrderItem } from "@/lib/database/models/order.model";
 import Tooltip from "@/components/shared/Tooltip";
 
-const Orders = async ({ searchParams }: SearchParamProps) => {
+const Orders = async (props: SearchParamProps) => {
+  const searchParams = await props.searchParams;
   const eventId = (searchParams?.eventId as string) || "";
   const searchText = (searchParams?.query as string) || "";
 

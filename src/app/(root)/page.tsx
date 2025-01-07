@@ -8,7 +8,8 @@ import { SearchParamProps } from "@/types";
 import Link from "next/link";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const Home = async ({ searchParams }: SearchParamProps) => {
+const Home = async (props: SearchParamProps) => {
+  const searchParams = await props.searchParams;
   // console.log(searchParams);
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || "";
